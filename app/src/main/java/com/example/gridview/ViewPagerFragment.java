@@ -1,36 +1,68 @@
 package com.example.gridview;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class ViewPagerFragment extends Fragment {
 
-    private String   text;
-    private GridView gv;
+    int mNum;
 
-    public ViewPagerFragment(String text){
-        super();
-        this.text = text;
+    /**
+     * Create a new instance of CountingFragment, providing "num"
+     * as an argument.
+     */
+    static ViewPagerFragment newInstance(int num) {
+        ViewPagerFragment f = new ViewPagerFragment();
+
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+
+        return f;
     }
 
     /**
-     * 覆盖此函数，先通过inflater inflate函数得到view最后返回
+     * When creating, retrieve this instance's number from its arguments.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.gridview_item, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+    }
 
-        gv = (GridView)v.findViewById(R.id.gv);
+    /**
+     * The Fragment's UI is just a simple text view showing its
+     * instance number.
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.viewpager_list, container, false);
 
-        gv.setAdapter(new GridViewAdapter(getContext()));
+        View gridView = v.findViewById(R.id.gridview);
+        ((GridView)gridView).setAdapter(new GridViewAdapter(getContext()));
+
+        View noitem = v.findViewById(R.id.empty);
+        noitem.setVisibility(View.GONE);
+
+        View tv = v.findViewById(R.id.text);
+        ((TextView)tv).setText("Fragment #" + mNum);
         return v;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
 
 }
+
