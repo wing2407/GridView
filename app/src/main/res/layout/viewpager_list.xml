@@ -10,28 +10,30 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/hello_world"/>
 
+    <GridView android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="4"
+        android:drawSelectorOnTop="false"/>
+
     <!-- The frame layout is here since we will be showing either
     the empty view or the list view.  -->
-    <FrameLayout
+   <!-- <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1" >
-        <!-- Here is the list. Since we are using a ListActivity, we
+        &lt;!&ndash; Here is the list. Since we are using a ListActivity, we
              have to call it "@android:id/list" so ListActivity will
-             find it -->
-        <GridView android:id="@+id/gridview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="4"
-            android:drawSelectorOnTop="false"/>
+             find it &ndash;&gt;
 
-        <!-- Here is the view to show if the list is emtpy -->
+
+        &lt;!&ndash; Here is the view to show if the list is emtpy &ndash;&gt;
         <TextView android:id="@+id/empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="No items."/>
 
-    </FrameLayout>
+    </FrameLayout>-->
 
 </LinearLayout>

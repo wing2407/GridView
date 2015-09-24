@@ -1,24 +1,29 @@
 package com.example.gridview;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/9/22.
  */
 public class GridViewAdapter extends BaseAdapter {
     private Context mContext;
+    private List<String> mData;
 
-    public GridViewAdapter(Context c) {
+    public GridViewAdapter(Context c,List<String> data) {
         mContext = c;
+        mData =data;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return mData.size();
+        //return mThumbIds.length;
     }
 
     public Object getItem(int position) {
@@ -31,19 +36,30 @@ public class GridViewAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        //ImageView imageView;
+        TextView textView;
+
         if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.gridview_item,null);
+            textView = (TextView)convertView.findViewById(R.id.tv);
+            convertView.setTag(textView);
+
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
+           /* imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setPadding(8, 8, 8, 8);*/
         } else {
-            imageView = (ImageView) convertView;
+            textView = (TextView)convertView.getTag();
+
+            //imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
-        return imageView;
+        textView.setText(mData.get(position)+"");
+        return convertView;
+       /* imageView.setImageResource(mThumbIds[position]);
+        return imageView;*/
+
     }
 
     // references to our images

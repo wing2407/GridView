@@ -4,30 +4,35 @@ package com.example.gridview;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.List;
 
-class ViewPagerAdapter extends FragmentPagerAdapter {
+class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    static final int NUM_ITEMS = 5;
+    //生成的fragment个数
+    static int NUM_ITEMS;
 
     Context mContext;
-    LinearLayout group;
-    ViewPager mViewPager;
-    private ImageView[] imageViews;
+    LinearLayout group;//导航圆点布局
+    ViewPager mViewPager;//滑动布局
+    private ImageView[] imageViews;//导航图片
     private ImageView imageView;
+    private List<String> data;
 
-    public ViewPagerAdapter(FragmentManager fm,Context context,LinearLayout group,ViewPager viewPager) {
+    public ViewPagerAdapter(FragmentManager fm, Context context, LinearLayout group, ViewPager viewPager, List<String> list) {
         super(fm);
-        this.mContext =context;
+        this.mContext = context;
         this.group = group;
-        this.mViewPager =viewPager;
+        this.mViewPager = viewPager;
+        this.data = list;
+        NUM_ITEMS = list.size() / 12 + 1;//一个fragment一个gridview，一个gridview有12个图标
         initCirclePoint();
-        mViewPager.setOnPageChangeListener(new AdPageChangeListener());
+        mViewPager.setOnPageChangeListener(new AdPageChangeListener());//滑动监听
 
     }
 
@@ -38,13 +43,15 @@ class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ViewPagerFragment.newInstance(position);
+            return new ViewPagerFragment(position, data.subList(position * 12, position * 12 + 12 > data.size() ? data.size() : position * 12 + 12));
+
     }
 
+    //动态增长小圆点导航
     private void initCirclePoint() {
-        imageViews = new ImageView[5];
-        //广告栏的小圆点图标
-        for (int i = 0; i < 5; i++) {
+        imageViews = new ImageView[NUM_ITEMS];
+        //小圆点图标
+        for (int i = 0; i < NUM_ITEMS; i++) {
             //创建一个ImageView, 并设置宽高. 将该对象放入到数组中
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(20, 20));
